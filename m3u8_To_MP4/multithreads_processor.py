@@ -186,19 +186,14 @@ class Crawler(object):
                                 '{} generated an exception: {}'.format(
                                     segment_uri, exc))
 
-                        if response_code == 200:
-                            segment_url_to_encrypted_content.append(
-                                    (segment_uri, response_content))
+                        if response_code != 200:
+                            raise Exception(f"Failed to download segment: {segment_uri}")
 
-                            segments_by_key.remove(segment_uri)
-                            progress_bar.update()
-
-                    if len(segments_by_key) > 0:
-                        sys.stdout.write('\n')
-                        logging.info(
-                            '{} segments are failed to download, retry...'.format(
-                                len(segments_by_key)))
-
+                        segment_url_to_encrypted_content.append(
+                                (segment_uri, response_content))
+                        segments_by_key.remove(segment_uri)
+                        progress_bar.update()
+                        
             logging.info('decrypt and dump segments...')
             for segment_url, encrypted_content in segment_url_to_encrypted_content:
                 file_name = path_helper.resolve_file_name_by_uri(segment_url)

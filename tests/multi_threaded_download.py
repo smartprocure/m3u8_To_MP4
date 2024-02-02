@@ -21,7 +21,7 @@ class TestDownloadFunction(unittest.TestCase):
     def test_multithread_proxy_download(self):
         def tracker(progress):
             print(f'Tracking {progress}')
-        testURI = "https://reflect-thornton.cablecast.tv/store-3/1225-Thornton-City-Council-Meeting-August-22-2023-v1/1080p.m3u8?duration=0"
+        testURI = "https://telvuevod-secure.akamaized.net/vodhls/vod_player/71/media/850502/1706231922/master.m3u8"
         mp4Path = "./data/test_multithread_proxy_download.mp4"
         mp4MD5 = "2ffd46cbb1da38e1518ea9ed09b03948"
         m3u8_To_MP4.multithread_download(testURI, file_path=mp4Path, max_num_workers=60,
