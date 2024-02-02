@@ -53,18 +53,12 @@ class MultiThreadsFileCrawler(v2_abstract_task_processor.AbstractFileCrawler):
                             '{} generated an exception: {}'.format(segment_url,
                                                                    exc))
 
-                    if response_code == 200:
-                        key_url_encrypted_data_triple.append(
-                                (key, segment_url, response_data))
+                    if response_code != 200:
+                        raise Exception(f"Error downloading segment: {segment_url}")
 
-                        key_segments_pairs.remove((key, segment_url))
-                        progress_bar.update()
-
-                if len(key_segments_pairs) > 0:
-                    sys.stdout.write('\n')
-                    logging.info(
-                        '{} segments are failed to download, retry...'.format(
-                            len(key_segments_pairs)))
+                    key_url_encrypted_data_triple.append((key, segment_url, response_data))
+                    key_segments_pairs.remove((key, segment_url))
+                    progress_bar.update()
 
             logging.info('decrypt and dump segments...')
             for key, segment_url, encrypted_data in key_url_encrypted_data_triple:
@@ -116,18 +110,12 @@ class MultiThreadsUriCrawler(v2_abstract_task_processor.AbstractUriCrawler):
                             '{} generated an exception: {}'.format(segment_url,
                                                                    exc))
 
-                    if response_code == 200:
-                        key_url_encrypted_data_triple.append(
-                                (key, segment_url, response_data))
-
-                        key_segments_pairs.remove((key, segment_url))
-                        progress_bar.update()
-
-                if len(key_segments_pairs) > 0:
-                    sys.stdout.write('\n')
-                    logging.info(
-                        '{} segments are failed to download, retry...'.format(
-                            len(key_segments_pairs)))
+                    if response_code != 200:
+                        raise Exception(f"Error downloading segment: {segment_url}")
+                    
+                    key_url_encrypted_data_triple.append((key, segment_url, response_data))
+                    key_segments_pairs.remove((key, segment_url))
+                    progress_bar.update()
 
             logging.info('decrypt and dump segments...')
             for key, segment_url, encrypted_data in key_url_encrypted_data_triple:
